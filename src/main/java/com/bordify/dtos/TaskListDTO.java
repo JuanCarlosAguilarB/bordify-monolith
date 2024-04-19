@@ -46,7 +46,6 @@ public class TaskListDTO {
      * @param description The description of the task.
      * @param topicId The unique identifier of the topic associated with the task.
      */
-    @AllArgsConstructor
     public TaskListDTO(UUID id, String name, String description, UUID topicId) {
         this.id = id;
         this.name = name;

@@ -22,6 +22,6 @@ public interface TopicRepository extends JpaRepository<Topic, UUID> {
      * @param pageable The pagination information.
      * @return A list of topic DTOs associated with the specified board ID.
      */
-    @Query("SELECT new com.bordify.entities.TopicListDTO(t.id, t.name, c) FROM Topic t LEFT JOIN t.color c WHERE t.boardId = :boardId")
+    @Query("SELECT new com.bordify.dtos.TopicListDTO(t.id, t.name, c) FROM Topic t LEFT JOIN t.color c WHERE t.boardId = :boardId")
     List<TopicListDTO> findByBoardIdCustom(UUID boardId, Pageable pageable);
 }

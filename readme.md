@@ -24,10 +24,9 @@ Bordify is a monolithic Trello-style application designed to manage tasks and pr
     │   ├── java/
     │   │   └── com.bordify/
     │   │       ├── models/
-    │   │       ├── entities/
     │   │       ├── services/
-    │   │       ├── repositorys/
-    │   │       ├── Dtos/
+    │   │       ├── repositories/
+    │   │       ├── dtos/
     │   │       ├── config/
     │   │       ├── utils/
     │   │       ├── controllers/

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -95,4 +96,20 @@ public class BoardService {
             throw new EntityNotFound("Board not found");
         }
     }
+
+    /**
+     * Checks if a user is the owner of a board.
+     *
+     * @param boardId The ID of the board to check ownership for.
+     * @param userId The ID of the user to check ownership against.
+     * @return True if the user is the owner of the board, false otherwise.
+     * @throws EntityNotFound if the board with the specified ID does not exist.
+     */
+    public Boolean isUserOwnerOfBoard(UUID boardId, UUID userId) {
+        Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFound("Board not found")));
+        return board.get().getUserId().equals(userId);
+    }
+
+
 }

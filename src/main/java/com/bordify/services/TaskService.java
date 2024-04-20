@@ -1,7 +1,9 @@
 package com.bordify.services;
 
 import com.bordify.dtos.TaskListDTO;
+import com.bordify.exceptions.EntityNotFound;
 import com.bordify.models.Task;
+import com.bordify.models.TaskItem;
 import com.bordify.repositories.TaskItemRepository;
 import com.bordify.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -87,4 +91,90 @@ public class TaskService {
     public List<Task> listTasksSliced(Pageable pageable) {
         return (List<Task>) taskRepository.findAll(pageable);
     }
+
+    /**
+     * Retrieves a task with its associated task items.
+     *
+     * @param taskId The id of the task to retrieve.
+     * @return Optional containing the task with its task items.
+     */
+    public Optional<TaskListDTO> getTaskForBoard(UUID taskId) {
+
+        Optional<Task> task = taskRepository.findById(taskId);
+        Optional<TaskListDTO> taskDTO = task.map(t -> {
+            TaskListDTO taskListDTO = new TaskListDTO(
+                    t.getId(),
+                    t.getName(),
+                    t.getDescription(),
+                    t.getTopicId()
+
+            );
+            taskListDTO.setTaskItems(taskItemRepository.findByTaskId(t.getId()));
+            return taskListDTO;
+        });
+
+        return taskDTO;
+    }
+
+    /**
+     * Checks if a task with the given id exists.
+     *
+     * @param id The id of the task to check.
+     * @throws EntityNotFound If the task does not exist.
+     */
+    public void ensureTaskExists(UUID id) {
+        if (!taskRepository.existsById(id)) {
+            throw new EntityNotFound("Task not found");
+        }
+    }
+
+    /**
+     * Updates a task, including its associated task items.
+     *
+     * @param task The task to update.
+     * @return The updated task.
+     */
+    public Task update(Task task) {
+        ensureTaskExists(task.getId());
+
+//        Task taskupdated = taskRepository.save(task);
+
+        List<UUID> taskItemsIds = new ArrayList<>();
+        List<TaskItem> taskItems = new ArrayList<>();
+
+        if (task.getTaskItems() == null || task.getTaskItems().isEmpty()) {
+            taskItemRepository.deleteAllByTaskId(task.getId());
+            return taskRepository.save(task);
+        }
+
+
+        for (TaskItem assignee : task.getTaskItems()) {
+            TaskItem taskItem = taskItemRepository.findById(assignee.getId())
+                    .orElseGet(() -> {
+                        TaskItem newTaskItem = TaskItem.builder()
+                                .id(assignee.getId())
+                                .content(assignee.getContent())
+                                .taskId(task.getId())
+                                .isDone(false)
+                                .build();
+                        taskItemRepository.save(newTaskItem);
+
+                        return newTaskItem;
+                    });
+
+            taskItem.setContent(assignee.getContent());
+            taskItemsIds.add(taskItem.getId());
+            taskItems.add(taskItem);
+            taskItemRepository.save(taskItem);
+        }
+
+        taskItemRepository.deleteAllByIdNotIn(taskItemsIds);
+        taskRepository.save(task);
+
+        return task;
+
+    }
+
+
+
 }

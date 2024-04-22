@@ -57,6 +57,10 @@ jobs: # List of jobs
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+            
+            # for permisions denied
+            - name: Make gradlew executable
+              run: chmod +x ./gradlew
 
             - run: echo run unit tests
             #run unit tests

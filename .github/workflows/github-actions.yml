@@ -21,6 +21,7 @@ jobs: # List of jobs
             - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
             - run: echo "💡 The ${{ github.sha }} commit has been checked out."
             - run: echo "💡 The ${{ github.actor }} actor is running the workflow."
+            - run : echo "💡The ${{ github.ref }} ref is being used."
 
             - run: | # Run multiple commands
                 echo "💡 The ${{ github.repository }} repository has been cloned to the runner."

@@ -16,7 +16,44 @@ jobs: # List of jobs
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
+
             - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
             - run: echo "💡 The ${{ github.sha }} commit has been checked out."
             - run: echo "💡 The ${{ github.actor }} actor is running the workflow."
 
+            - run: | # Run multiple commands
+                echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+                echo "💡 The ${{ github.sha }} commit has been checked out."
+                echo "💡 The ${{ github.actor }} actor is running the workflow."
+
+
+            - uses: actions/setup-java@v4
+              with:
+                  distribution: 'zulu'
+                  java-version: '17'
+
+
+            # use artifact caching to speed up the build
+            - uses: actions/cache@v2
+              with:
+                  path: ~/.m2/repository
+                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-
+
+            - name: Build with gradle
+              run: ./gradlew build
+
+
+    unit-test:
+        runs-on: ubuntu-latest
+        needs:
+            - build
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - run: echo run unit tests
+            #run unit tests
+            - name: Run unit tests
+              run: ./gradlew test

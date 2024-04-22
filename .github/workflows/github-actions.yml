@@ -32,7 +32,11 @@ jobs: # List of jobs
               with:
                   distribution: 'zulu'
                   java-version: '17'
-
+            
+            # for permisions denied
+            - name: Make gradlew executable
+              run: chmod +x ./gradlew
+            
 
             # use artifact caching to speed up the build
             - uses: actions/cache@v2

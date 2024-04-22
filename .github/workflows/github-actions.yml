@@ -3,10 +3,10 @@ name: Maven CI # Name of the workflow
 on: # When to run the workflow
     push:   # Run the workflow on push
         branches:
-            - master
+            - all
     pull_request:   # Run the workflow on pull request
         branches:
-            - master
+            - all
 
 jobs: # List of jobs
     build:  # Job name, it can be any name

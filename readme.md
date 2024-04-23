@@ -15,10 +15,12 @@ Bordify is a monolithic Trello-style application designed to manage tasks and pr
 - Docker and Docker Compose support
 -  Monolith built with Spring Boot.
 
+* Added CI/CD pipeline with GitHub Actions for automated testing and deployment. 👌
+
 ### Project Structure
 
 - **bordify-api**: Spring Boot application that serves as the backend for the Bordify application.
-```plaintext 
+```plaintext
 └── src/
     ├── main/
     │   ├── java/
@@ -44,7 +46,7 @@ Bordify is a monolithic Trello-style application designed to manage tasks and pr
 
 - **Local configuration without Docker**
 1. Clone the repository:
-```bash 
+```bash
 git clone git@github.com:JuanCarlosAguilarB/bordify-monolith.git
 ```
 

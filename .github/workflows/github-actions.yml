@@ -9,14 +9,52 @@ on: # When to run the workflow
             - master
 
 jobs: # List of jobs
-    build:  # Job name, it can be any name
+  build:  # Job name, it can be any name
 
-        runs-on: ubuntu-latest # where the job will run
+    runs-on: ubuntu-latest # where the job will run
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-            - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-            - run: echo "💡 The ${{ github.sha }} commit has been checked out."
-            - run: echo "💡 The ${{ github.actor }} actor is running the workflow."
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "💡 The ${{ github.sha }} commit has been checked out."
+      - run: echo "💡 The ${{ github.actor }} actor is running the workflow."
+      - run : echo "💡The ${{ github.ref }} ref is being used."
+
+      - run: | # Run multiple commands
+          echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+          echo "💡 The ${{ github.sha }} commit has been checked out."
+          echo "💡 The ${{ github.actor }} actor is running the workflow."
+
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      # for permisions denied
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+
+      # cache
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: clean project
+        run: ./gradlew clean
+
+      - name: Build with gradle
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test

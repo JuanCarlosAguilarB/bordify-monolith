@@ -23,7 +23,7 @@ RUN gradle build --no-daemon -x test
 FROM azul/zulu-openjdk:17-latest
 
 # Copiar el artefacto de construcción desde la etapa de construcción al directorio de trabajo del contenedor de ejecución
-COPY --from=build /home/gradle/src/build/libs/social-network-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /home/gradle/src/build/libs/bordify-monolith-0.0.1-SNAPSHOT.jar app.jar
 
 # Exponer el puerto 8081
 EXPOSE 8081

@@ -28,9 +28,9 @@ public class RabbitMQConfig {
 //    @Value("${rabbitmq.queue}")
 //    String queueName;
 //
-//    @Value("${rabbitmq.exchange}")
-//    String exchange;
-//
+    @Value("${spring.rabbitmq.exchange}")
+    String exchange;
+
 //    @Value("${rabbitmq.routingkey}")
 //    private String routingkey;
 //
@@ -40,10 +40,10 @@ public class RabbitMQConfig {
 //    }
 //
 //
-//    @Bean
-//    DirectExchange exchange() {
-//        return new DirectExchange(exchange);
-//    }
+    @Bean
+    DirectExchange exchange() {
+        return new DirectExchange(exchange);
+    }
 //
 //    @Bean
 //    Binding binding(Queue queue, DirectExchange exchange) {

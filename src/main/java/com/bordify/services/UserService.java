@@ -1,6 +1,7 @@
 package com.bordify.services;
 
 import com.bordify.controllers.auth.AuthJwtResponse;
+import com.bordify.events.CreateUserDomainEvent;
 import com.bordify.exceptions.DuplicateEmailException;
 import com.bordify.exceptions.UserNotFoundException;
 import com.bordify.models.User;
@@ -21,6 +22,9 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private RabbitService rabbitService;
+
     /**
      * Creates a new user with the provided user details and generates an authentication token.
      *
@@ -39,6 +43,22 @@ public class UserService {
         }
 
         userRepository.save(user);
+
+        CreateUserDomainEvent createUserDomainEvent = new CreateUserDomainEvent(
+                user.getId().toString(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getIsVerified(),
+                user.getPhoneNumber(),
+                user.getCreated(),
+                user.getLastLogin()
+        );
+
+        rabbitService.publish(createUserDomainEvent);
+
         String token = jwtService.getAccessToken(user.getUsername());
         return AuthJwtResponse.builder()
                 .token(token)

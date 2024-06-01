@@ -1,9 +1,7 @@
 package com.bordify.models;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalTime;
 import java.util.UUID;
@@ -23,6 +21,8 @@ import java.util.UUID;
 @Builder
 @Table(name = "\"user\"")
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     /**

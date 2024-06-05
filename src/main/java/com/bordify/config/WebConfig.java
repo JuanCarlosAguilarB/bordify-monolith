@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173") // Allow requests from this origin
+                .allowedOrigins("http://localhost:5173", "https://boardify-psi.vercel.app/") // Allow requests from this origin
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS") // Allow these HTTP methods
                 .allowedHeaders("*"); // Allow all headers in requests
     }

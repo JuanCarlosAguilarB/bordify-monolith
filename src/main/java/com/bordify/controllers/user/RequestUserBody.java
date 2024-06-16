@@ -2,9 +2,11 @@ package com.bordify.controllers.user;
 
 import com.bordify.exceptions.InvalidRequestArgumentException;
 import com.bordify.utils.EmailValidator;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class RequestUserBody {
     private String username;
     private String email;

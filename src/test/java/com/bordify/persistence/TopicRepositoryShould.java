@@ -20,11 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @DataJpaTest
-public class TopicRepositoryShuold {
+public class TopicRepositoryShould {
 
     @Autowired
     private TopicRepository topicRepository;

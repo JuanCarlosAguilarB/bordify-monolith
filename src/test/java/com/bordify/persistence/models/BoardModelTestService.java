@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public class BoardModelTestService  {
 
-    public static Board createValidBoard() {
+    public static Board createValidBoard(User user) {
 
-        User user = UserModelTestService.createValidUser();
+//        User user = UserModelTestService.createValidUser();
         UUID userId = user.getId();
 
         return Board.builder()

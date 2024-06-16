@@ -8,11 +8,7 @@ import java.util.UUID;
 
 public class TopicModelTestService {
 
-    public static Topic createValidTopic() {
-
-        Color color = ColorModelTestService.createValidColor();
-        Board  board = BoardModelTestService.createValidBoard();
-
+    public static Topic createValidTopic(Color color, Board  board) {
 
         Topic topic = Topic.builder()
                 .id(UUID.randomUUID())

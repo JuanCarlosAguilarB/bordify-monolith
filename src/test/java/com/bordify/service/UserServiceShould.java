@@ -71,11 +71,21 @@ public class UserServiceShould {
 
     @Test
     public void shouldCreateUser() {
-        // Given
         User userTest = UserModelTestService.createValidUser();
 
-        // When
         when(userRepositoryMock.save(userTest)).thenReturn(userTest);
+
+        String token = "token";
+        String refreshToken = "refreshToken";
+
+//        when(
+//            jwtServiceMock.getRefreshToken(userTest.getUsername())
+//        ).thenReturn(refreshToken);
+
+        when(
+            jwtServiceMock.getAccessToken(userTest.getUsername()
+            )).thenReturn(token);
+
 
         AuthJwtResponse response = userService.createUser(userTest);
 
@@ -83,6 +93,8 @@ public class UserServiceShould {
         Mockito.verify(userRepositoryMock, Mockito.times(1)).save(userTest);
         assertEquals(userTest.getId(), userTest.getId());
         assertEquals(userTest.getUsername(), userTest.getUsername());
+        Assertions.assertNotNull(response.getToken());
+//        Assertions.assertNotNull(response.getRefreshToken());
 
 
 

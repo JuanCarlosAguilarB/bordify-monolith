@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class TaskModelTestService {
 
-    public static Task createValidTask() {
+    public static Task createValidTask(Topic topic) {
 
-        Topic topic = TopicModelTestService.createValidTopic();
+//        Topic topic = TopicModelTestService.createValidTopic();
 
         Task task = Task.builder()
                 .id(UUID.randomUUID())

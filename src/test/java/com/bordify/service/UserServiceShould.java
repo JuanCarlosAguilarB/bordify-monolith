@@ -1,5 +1,6 @@
 package com.bordify.service;
 
+import com.bordify.controllers.auth.AuthJwtResponse;
 import com.bordify.exceptions.UserNotFoundException;
 import com.bordify.models.User;
 import com.bordify.persistence.models.UserModelTestService;
@@ -7,6 +8,7 @@ import com.bordify.repositories.UserRepository;
 import com.bordify.services.JwtService;
 import com.bordify.services.UserService;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,7 +69,24 @@ public class UserServiceShould {
 
     }
 
+    @Test
+    public void shouldCreateUser() {
+        // Given
+        User userTest = UserModelTestService.createValidUser();
 
+        // When
+        when(userRepositoryMock.save(userTest)).thenReturn(userTest);
+
+        AuthJwtResponse response = userService.createUser(userTest);
+
+        // Then
+        Mockito.verify(userRepositoryMock, Mockito.times(1)).save(userTest);
+        assertEquals(userTest.getId(), userTest.getId());
+        assertEquals(userTest.getUsername(), userTest.getUsername());
+
+
+
+    }
 
 
 }

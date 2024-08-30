@@ -59,16 +59,29 @@ test {
 	useJUnitPlatform {
 		includeTags 'unit'
 	}
+
+	// parrallel test execution
+	maxParallelForks = Runtime.runtime.availableProcessors()
+
 }
 
 task integrationTest(type: Test) {
 	useJUnitPlatform {
 		includeTags 'integration'
 	}
+	maxParallelForks = Runtime.runtime.availableProcessors()
 }
 
 jacoco {
 	toolVersion = "0.8.12"
+}
+
+// for to know the number of available processors
+task printCpuInfo {
+	doLast {
+		def availableProcessors = Runtime.runtime.availableProcessors()
+		println "Available processors: ${availableProcessors}"
+	}
 }
 
 //jacocoTestCoverageVerification {

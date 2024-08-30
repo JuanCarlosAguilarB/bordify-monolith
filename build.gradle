@@ -51,8 +51,20 @@ dependencies {
 
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
+
+test {
+	useJUnitPlatform {
+		includeTags 'unit'
+	}
+}
+
+task integrationTest(type: Test) {
+	useJUnitPlatform {
+		includeTags 'integration'
+	}
 }
 
 jacoco {

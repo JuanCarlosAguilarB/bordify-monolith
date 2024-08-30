@@ -1,73 +1,58 @@
 package com.bordify.persistence;
+
 import com.bordify.models.User;
 import com.bordify.repositories.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Optional;
-import java.util.UUID;
-@DataJpaTest
-public class UserRepositoryShould {
+import static com.bordify.persistence.models.UserModelTestService.createRandomUser;
+import static org.junit.jupiter.api.Assertions.*;
+
+//@DataJpaTest
+@Transactional
+public class UserRepositoryShould extends IntegrationTestBaseClass
+{
 
     @Autowired
-    private UserRepository userRepository;
+    private  UserRepository repository;
+    private  User userTest;
+
+    @BeforeEach
+    public void setUp() {
+
+        userTest = createRandomUser();
+        repository.save(userTest);
+
+    }
+
 
     @DisplayName("Should find user by email")
     @Test
     public void shouldFindUserByEmail() {
-        User userTest = createValidEntity();
-        userRepository.save(userTest);
 
-        boolean hasUser = userRepository.existsByEmail(userTest.getEmail());
+        boolean hasUser = repository.existsByEmail(userTest.getEmail());
+        User user = repository.findByEmail(userTest.getEmail());
 
-        Assertions.assertTrue(hasUser);
+//        Assertions.assertTrue(hasUser);
+//        Assertions.assertEquals(userTest, user);
+        assertAll("User found by email",
+                () -> assertTrue(hasUser, "User should exist by email"),
+                () -> assertEquals(userTest, user, "Fetched user should match the test user")
+        );
     }
 
     @DisplayName("Should find user by userName")
     @Test
     public void shouldFindUserByUsername() {
-        User userTest = createValidEntity();
-        userRepository.save(userTest);
-
-        boolean hasUser = userRepository.existsByUsername(userTest.getUsername());
-
-        Assertions.assertTrue(hasUser);
+        boolean hasUser = repository.existsByUsername(userTest.getUsername());
+        assertAll("User found by username",
+                () -> assertTrue(hasUser, "User should exist by username"),
+                () -> assertEquals(userTest, repository.findByUsername(userTest.getUsername()), "Fetched user should match the test user")
+        );
     }
 
-    @DisplayName("Should get an user by userName")
-    @Test
-    public void shouldGetAnUserByUsername() {
-        User userTest = createValidEntity();
-        userRepository.save(userTest);
-
-        User user = userRepository.findByUsername(userTest.getUsername());
-
-        Assertions.assertEquals(userTest, user);
-    }
-
-
-    @DisplayName("Should get an user by email")
-    @Test
-    public void shouldGetAnUserByEmail() {
-        User userTest = createValidEntity();
-        userRepository.save(userTest);
-
-        User user = userRepository.findByEmail(userTest.getEmail());
-
-        Assertions.assertEquals(userTest, user);
-    }
-
-
-    public User createValidEntity() {
-        return User.builder()
-                .id(UUID.randomUUID())
-                .firstName("John")
-                .lastName("Doe")
-                .email("john.doe@example.com")
-                .build();
-    }
 }

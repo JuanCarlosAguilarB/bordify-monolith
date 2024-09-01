@@ -75,6 +75,27 @@ task integrationTest(type: Test) {
 
 jacoco {
 	toolVersion = "0.8.12"
+
+}
+
+jacocoTestReport {
+//	dependsOn test, integrationTest
+	reports {
+		xml.required = true
+		csv.required = true
+		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(
+				fileTree(dir: "$buildDir/classes/java/main").include("**/*.class"),
+				fileTree(dir: "$buildDir/classes/java/integrationTest").include("**/*.class")
+		))
+		executionData.setFrom(files(
+				fileTree(dir: "$buildDir").include("jacoco/test.exec"),
+				fileTree(dir: "$buildDir").include("jacoco/integrationTest.exec")
+		))
+	}
 }
 
 // for to know the number of available processors

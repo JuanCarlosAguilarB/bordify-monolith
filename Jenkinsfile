@@ -7,6 +7,10 @@ pipeline {
         DOCKER_TAG = "${env.BUILD_ID}"
         SONAR_URL = "${env.SONAR_URL}"
         SONAR_TOKEN = "${env.SONAR_TOKEN}"
+        URL_DB      = "${env.URL_DB}"
+        USERNAME_DB = "${env.USERNAME_DB}"
+        PASSWORD_DB = "${env.PASSWORD_DB}"
+
     }
 
     stages {

@@ -5,8 +5,8 @@ pipeline {
         DOCKER_IMAGE_NAME = 'my-spring-boot-app'
         DOCKER_REGISTRY = 'my-docker-registry'
         DOCKER_TAG = "${env.BUILD_ID}"
-        SONAR_URL = ${env.SONAR_URL}
-        SONAR_TOKEN = ${env.SONAR_TOKEN}
+        SONAR_URL = "${env.SONAR_URL}"
+        SONAR_TOKEN = "${env.SONAR_TOKEN}"
     }
 
     stages {

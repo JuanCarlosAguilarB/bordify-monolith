@@ -6,16 +6,16 @@ import com.bordify.models.User;
 
 import java.util.UUID;
 
+import static com.bordify.shared.domain.FactoryValues.generateRandomAlphanumeric;
+
 public class BoardModelTestService  {
 
     public static Board createValidBoard(User user) {
 
-//        User user = UserModelTestService.createValidUser();
         UUID userId = user.getId();
-
         return Board.builder()
                 .id(UUID.randomUUID())
-                .name("Test Board")
+                .name(generateRandomAlphanumeric(1, 50))
                 .user(user)
                 .userId(userId)
                 .build();

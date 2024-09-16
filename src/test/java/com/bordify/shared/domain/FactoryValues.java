@@ -12,6 +12,17 @@ public class FactoryValues {
         return sb.toString();
     }
 
+    public static String generateRandomAlphanumeric(int start, int end) {
+        int length = (int)(Math.random() * (end - start) + start);
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = (int) (Math.random() * characters.length());
+            sb.append(characters.charAt(index));
+        }
+        return sb.toString();
+    }
+
     public static String generateRandomEmail() {
         return generateRandomString(8) + "@" + generateRandomString(5) + ".com";
     }

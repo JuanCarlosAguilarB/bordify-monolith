@@ -29,14 +29,6 @@ public interface BoardRepository extends JpaRepository<Board, UUID> {
     public boolean existsById(UUID boardId);
 
     /**
-     * Retrieves a page of board DTOs.
-     *
-     * @param pageable The pagination information.
-     * @return A page of board DTOs.
-     */
-    public Page<BoardListDTO> findBy(Pageable pageable);
-
-    /**
      * Retrieves a page of board DTOs filtered by user ID.
      *
      * @param pageable The pagination information.
@@ -45,11 +37,4 @@ public interface BoardRepository extends JpaRepository<Board, UUID> {
      */
     public Page<BoardListDTO> findByUserId(Pageable pageable, UUID userId);
 
-    /**
-     * Finds a board DTO by its ID.
-     *
-     * @param boardId The ID of the board.
-     * @return The board DTO.
-     */
-    public Board findDtoById(UUID boardId);
 }

@@ -1,9 +1,12 @@
 package com.bordify.persistence.models;
 
+import com.bordify.models.Board;
 import com.bordify.models.User;
 import com.bordify.repositories.UserRepository;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.bordify.shared.domain.FactoryValues.*;
@@ -52,5 +55,13 @@ public class UserFactory {
                 .build();
     }
 
+
+    public List<User> getUsersPersisted(int amountUsers){
+        List<User> users = new ArrayList<>();
+        for (int i =0; i<amountUsers; i++){
+            users.add(getRandomUserPersisted());
+        }
+        return users;
+    }
 
 }

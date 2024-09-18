@@ -7,6 +7,9 @@ import com.bordify.repositories.TopicRepository;
 
 import java.util.UUID;
 
+import static com.bordify.shared.domain.FactoryValues.generateRandomAlphanumeric;
+import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
+
 public class TopicFactory {
 
     private TopicRepository topicRepository;
@@ -15,7 +18,7 @@ public class TopicFactory {
 
         Topic topic = Topic.builder()
                 .id(UUID.randomUUID())
-                .name("Test Topic")
+                .name(generateRandomAlphanumeric(generateRandomValue(1,50)))
                 .color(color)
                 .colorId(color.getId())
                 .board(board)

@@ -7,7 +7,6 @@ import com.bordify.persistence.models.UserModelTestService;
 import com.bordify.repositories.UserRepository;
 import com.bordify.services.JwtService;
 import com.bordify.services.UserService;
-
 import com.bordify.shared.infrastucture.controlles.UnitTestBaseClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

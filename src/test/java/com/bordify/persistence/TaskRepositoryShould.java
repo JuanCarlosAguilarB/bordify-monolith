@@ -5,7 +5,6 @@ import com.bordify.dtos.TaskListDTO;
 import com.bordify.models.*;
 import com.bordify.persistence.models.*;
 import com.bordify.repositories.*;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @DataJpaTest
 public class TaskRepositoryShould {

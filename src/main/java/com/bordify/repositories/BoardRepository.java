@@ -1,7 +1,7 @@
 package com.bordify.repositories;
 
-import com.bordify.models.Board;
 import com.bordify.dtos.BoardListDTO;
+import com.bordify.models.Board;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

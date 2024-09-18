@@ -22,4 +22,6 @@ public class BoardListDTO {
      * The name of the board.
      */
     private String name;
+
+    private UUID userId;
 }

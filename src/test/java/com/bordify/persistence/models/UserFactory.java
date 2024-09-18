@@ -16,29 +16,6 @@ public class UserFactory {
 
     UserRepository userRepository;
 
-    public UserFactory(UserRepository userRepository){
-        this.userRepository= userRepository;
-    }
-
-    public User getRandomUserPersisted() {
-
-        LocalTime currentTime = LocalTime.now();
-        User user = User.builder()
-                .id(UUID.randomUUID())
-                .username(generateRandomAlphanumeric(generateRandomValue(5,20)))
-                .password(generateRandomAlphanumeric(generateRandomValue(5,20)))
-                .email(generateRandomEmail())
-                .firstName(generateRandomString(generateRandomValue(5,20)))
-                .lastName(generateRandomString(generateRandomValue(5,20)))
-                .isVerified(false)
-                .phoneNumber(generateRandomPhoneNumber())
-                .created(currentTime)
-                .lastLogin(null)
-                .build();
-        userRepository.save(user);
-        return user;
-    }
-
     public static User getRandomUser() {
         LocalTime currentTime = LocalTime.now();
         return User.builder()
@@ -55,6 +32,16 @@ public class UserFactory {
                 .build();
     }
 
+    public UserFactory(UserRepository userRepository){
+        this.userRepository= userRepository;
+    }
+
+    public User getRandomUserPersisted() {
+
+        User user = getRandomUser();
+        userRepository.save(user);
+        return user;
+    }
 
     public List<User> getUsersPersisted(int amountUsers){
         List<User> users = new ArrayList<>();

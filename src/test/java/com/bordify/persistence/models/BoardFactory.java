@@ -34,19 +34,14 @@ public class BoardFactory {
 
     public Board getRandomBoardPersisted(User user) {
 
-        Board board = Board.builder()
-                .id(UUID.randomUUID())
-                .name(generateRandomAlphanumeric(generateRandomValue(1,50)))
-                .user(user)
-                .userId(user.getId())
-                .build();
-
+        Board board = getRandomBoard(user);
         boardRepository.save(board);
         return board;
     }
 
 
     public List<Board> getRandomBoardsPersisted(User user, int amountBoards){
+
         List<Board> boards = new ArrayList<>();
         for (int i =0; i<amountBoards; i++){
             Board board = getRandomBoard(user);

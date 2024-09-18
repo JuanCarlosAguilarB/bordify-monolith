@@ -8,16 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class TaskModelTestService {
+import static com.bordify.shared.domain.FactoryValues.generateRandomAlphanumeric;
+import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 
-    public static Task createValidTask(Topic topic) {
+public class TaskFactory {
 
-//        Topic topic = TopicModelTestService.createValidTopic();
+
+    public static Task getRandomTaks(Topic topic) {
 
         Task task = Task.builder()
                 .id(UUID.randomUUID())
-                .name("Test Task")
-                .description("This is a test task.")
+                .name(generateRandomAlphanumeric(generateRandomValue(1,50)))
+                .description(generateRandomAlphanumeric(generateRandomValue(1,50)))
                 .topic(topic)
                 .topicId(topic.getId())
                 .build();
@@ -26,7 +28,7 @@ public class TaskModelTestService {
     }
 
 
-    public static List<Task> createValidListTask(Topic topic, int amountTask) {
+    public static List<Task> getRandomListOfTask(Topic topic, int amountTask) {
 
         String generatedString = RandomStringUtils.randomAlphanumeric(10);
 

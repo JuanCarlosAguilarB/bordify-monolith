@@ -4,9 +4,12 @@ package com.bordify.persistence;
 import com.bordify.dtos.BoardListDTO;
 import com.bordify.models.Board;
 import com.bordify.models.User;
+import com.bordify.persistence.models.BoardFactory;
+import com.bordify.persistence.models.UserFactory;
 import com.bordify.repositories.BoardRepository;
 import com.bordify.repositories.UserRepository;
 import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,30 +17,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
-import static com.bordify.persistence.models.BoardModelTestService.createValidBoard;
-import static com.bordify.persistence.models.UserModelTestService.createValidUser;
 import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 public class BoardRepositoryShould extends IntegrationTestBaseClass {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private BoardRepository boardRepository;
+    private UserFactory userFactory;
+    private BoardFactory boardFactory;
+    private Board boardTest;
+    private User userTest;
 
-    Board boardTest;
-    User userTest;
+    @Autowired
+    public BoardRepositoryShould(UserRepository userRepository, BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
+        this.userFactory = new UserFactory(userRepository);
+        this.boardFactory = new BoardFactory(boardRepository);
+    }
 
     @BeforeEach
     public void setUp() {
-        userTest = createUser();
-        boardTest = createBoards(this.userTest,1).get(0);
+        this.userTest = userFactory.getRandomUserPersisted();
+        this.boardTest = boardFactory.getRandomBoardPersisted(this.userTest);
     }
 
 
@@ -71,9 +78,10 @@ public class BoardRepositoryShould extends IntegrationTestBaseClass {
         int amountBoardsPerUser = generateRandomValue(3, 15);
         int pageSize = generateRandomValue(1, amountBoardsPerUser);
 
-        for (int i=0; i<amountUsers; i++){
-            createBoards(createUser(),amountBoardsPerUser);
-        }
+        // create boards for others users
+        userFactory.getUsersPersisted(amountUsers).forEach(user->
+                boardFactory.getRandomBoardsPersisted(user,amountBoardsPerUser)
+        );
 
         Pageable pageable = Pageable.ofSize(pageSize);
         Page<BoardListDTO> boardsPageResult =  boardRepository.findByUserId(pageable,userTest.getId());
@@ -98,12 +106,12 @@ public class BoardRepositoryShould extends IntegrationTestBaseClass {
         int pageSize = generateRandomValue(1, amountBoardsPerUser);
 
         // create boards for others users
-        for (int i=0; i<amountUsers; i++){
-            createBoards(createUser(),amountBoardsPerUser);
-        }
+        userFactory.getUsersPersisted(amountUsers).forEach(user->
+                        boardFactory.getRandomBoardsPersisted(user,amountBoardsPerUser)
+                );
 
         // create more boards for user of test
-        createBoards(userTest, amountBoardsPerUser);
+        boardFactory.getRandomBoardsPersisted(userTest, amountBoardsPerUser);
 
 
         Pageable pageable = Pageable.ofSize(pageSize);
@@ -114,23 +122,6 @@ public class BoardRepositoryShould extends IntegrationTestBaseClass {
         boardList.forEach(board -> assertThat(board.getUserId()).isEqualTo(userTest.getId()));
 //        assertEquals(boardTest, board);
 
-    }
-
-    private User createUser(){
-        User user = createValidUser();
-        userRepository.save(user);
-        return user;
-    }
-
-
-    private List<Board> createBoards(User user, int amountBoards){
-        List<Board> boards = new ArrayList<>();
-        for (int i =0; i<amountBoards; i++){
-            Board board = createValidBoard(user);
-            boardRepository.save(board);
-            boards.add(board);
-        }
-        return boards;
     }
 
 }

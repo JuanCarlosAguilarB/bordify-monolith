@@ -5,48 +5,59 @@ import com.bordify.dtos.TaskListDTO;
 import com.bordify.models.*;
 import com.bordify.persistence.models.*;
 import com.bordify.repositories.*;
+import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
-@DataJpaTest
-public class TaskRepositoryShould {
+import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
+
+@Transactional
+public class TaskRepositoryShould  extends IntegrationTestBaseClass {
 
 
-    @Autowired
+    private TopicFactory topicFactory;
+    private UserFactory userFactory;
+    private BoardFactory boardFactory;
+    private ColorFactory colorFactory;
     private TaskRepository taskRepository;
+
+    private Topic topicTest;
+    private Task taskTest;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private BoardRepository boardRepository;
-    @Autowired
-    private ColorRepository colorRepository;
-    @Autowired
-    private TopicRepository topicRepository;
+    public TaskRepositoryShould(TaskRepository taskRepository, UserRepository userRepository, BoardRepository boardRepository, TopicRepository topicRepository, ColorRepository colorRepository){
+        this.userFactory = new UserFactory(userRepository);
+        this.colorFactory = new ColorFactory(colorRepository);
+        this.boardFactory = new BoardFactory(boardRepository);
+        this.topicFactory = new TopicFactory(topicRepository);
+        this.taskRepository = taskRepository;
+    }
+
+
+    @BeforeEach
+    public void setup(){
+
+        User userTest = userFactory.getRandomUserPersisted();
+        Board boardTest = boardFactory.getRandomBoardPersisted(userTest);
+        Color colorTest = colorFactory.getRandomColorPersisted();
+        topicTest = topicFactory.getRandomTopicPersisted(colorTest, boardTest);
+
+        taskTest = TaskFactory.getRandomTaks(topicTest);
+
+    }
+
 
     @DisplayName("Should find task by id")
     @Test
     public void shouldFindTaskById() {
 
-        User userTest = UserModelTestService.createValidUser();
-        userRepository.save(userTest);
-
-        Board boardTest = BoardModelTestService.createValidBoard(userTest);
-        boardRepository.save(boardTest);
-
-        Color colorTest = ColorModelTestService.createValidColor();
-        colorRepository.save(colorTest);
-
-        Topic topicTest = TopicModelTestService.createValidTopic(colorTest, boardTest);
-        topicRepository.save(topicTest);
-
-
-        Task taskTest = TaskModelTestService.createValidTask(topicTest);
         taskRepository.save(taskTest);
 
         Optional<Task> tasks = taskRepository.findById(taskTest.getId());
@@ -60,28 +71,17 @@ public class TaskRepositoryShould {
     @Test
     public void shouldFindAllTasksOfTopic() {
 
-        User userTest = UserModelTestService.createValidUser();
-        userRepository.save(userTest);
+        int taskAmount = generateRandomValue(5, 15);
 
-        Board boardTest = BoardModelTestService.createValidBoard(userTest);
-        boardRepository.save(boardTest);
-
-        Color colorTest = ColorModelTestService.createValidColor();
-        colorRepository.save(colorTest);
-
-        Topic topicTest = TopicModelTestService.createValidTopic(colorTest, boardTest);
-        topicRepository.save(topicTest);
-
-        List<Task> listTaskTopic =  TaskModelTestService.createValidListTask(topicTest, 5);
+        List<Task> listTaskTopic =  TaskFactory.getRandomListOfTask(topicTest, taskAmount);
         taskRepository.saveAll(listTaskTopic);
 
         Pageable pageable = Pageable.unpaged();
         List<TaskListDTO> tasks = taskRepository.findByTopicId(topicTest.getId(), pageable);
 
         assert !tasks.isEmpty();
-        assert tasks.size() == 5;
+        assert tasks.size() == taskAmount;
         assert tasks.stream().allMatch(task -> task.getTopicId().equals(topicTest.getId()));
-
 
     }
 

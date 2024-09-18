@@ -29,7 +29,8 @@ public class UserRepositoryShould extends IntegrationTestBaseClass
 
     @BeforeEach
     public void setUp() {
-        userTest = userFactory.getRandomUserPersisted();
+        userTest = userFactory.getRandomUser();
+        repository.save(userTest);
     }
 
 

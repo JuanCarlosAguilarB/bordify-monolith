@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//@DataJpaTest
 @Transactional
 public class UserRepositoryShould extends IntegrationTestBaseClass
 {

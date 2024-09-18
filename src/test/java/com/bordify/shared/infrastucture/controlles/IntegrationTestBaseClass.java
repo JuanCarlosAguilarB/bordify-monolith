@@ -22,20 +22,19 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.bordify.persistence.models.UserModelTestService.createRandomUser;
+import static com.bordify.persistence.models.UserFactory.getRandomUser;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
-@Transactional
 @Tag("integration")
 @TestMethodOrder(MethodOrderer.Random.class)
 abstract public class IntegrationTestBaseClass {
 
 
-    private final User user = createRandomUser();
+    private final User user = getRandomUser();
     @Autowired
     protected MockMvc mockMvc;
     @Autowired

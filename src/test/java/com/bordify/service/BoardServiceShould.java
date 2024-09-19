@@ -228,4 +228,44 @@ public class BoardServiceShould extends UnitTestBaseClass {
     }
 
 
+    @DisplayName(" should be owner of board")
+    @Test
+    public void shouldBeOwnerOfBoard(){
+
+
+        User user = UserFactory.getRandomUser();
+        Board board = BoardFactory.getRandomBoard(user);
+        UUID boardId = board.getId();
+        UUID userId = user.getId();
+
+        when(repositoryMock.findById(boardId)).thenReturn(Optional.of(board));
+
+        boolean isUserOwnerOfBoard = boardService.isUserOwnerOfBoard(boardId, userId);
+
+        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
+
+        Assertions.assertTrue(isUserOwnerOfBoard);
+
+    }
+
+    @DisplayName(" should throw an exception when is not owner of board")
+    @Test
+    public void shouldThrowAnExceptionWhenIsNotOwnerOfBoard(){
+
+        User user = UserFactory.getRandomUser();
+        Board board = BoardFactory.getRandomBoard(user);
+        UUID boardId = board.getId();
+        UUID userIdNotRelated = UUID.randomUUID();
+
+        when(repositoryMock.findById(boardId)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFound.class, ()->{
+            boardService.isUserOwnerOfBoard(boardId, userIdNotRelated);
+        });
+
+
+        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
+
+    }
+
 }

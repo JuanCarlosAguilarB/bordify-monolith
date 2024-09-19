@@ -67,14 +67,14 @@ public class UserController {
     }
 
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Operation(summary = "Get a user", description = "Get a user", tags = { "User" })
-    @GetMapping(value = "/users/me/")
-    public User getUser() {
-
-        User user = userRepository.findByUsername("1");
-        return user;
-    }
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Operation(summary = "Get a user", description = "Get a user", tags = { "User" })
+//    @GetMapping(value = "/users/me/")
+//    public User getUser() {
+//
+//        User user = userRepository.findByUsername("1");
+//        return user;
+//    }
 }

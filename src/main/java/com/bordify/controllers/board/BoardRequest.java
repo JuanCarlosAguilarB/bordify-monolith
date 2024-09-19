@@ -1,15 +1,10 @@
 package com.bordify.controllers.board;
 
+import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
-
 @Data
+@Builder
 public class BoardRequest {
-
-
     private String name;
-
-
 }

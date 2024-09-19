@@ -45,6 +45,7 @@ abstract public class IntegrationControllersTestBaseClass implements Integration
         return user;
     }
 
+    // TODO: i need delete this user of db when all tets were execute
     public User createRandomPersistentUser() {
 
         if (!userWasPersisted) {

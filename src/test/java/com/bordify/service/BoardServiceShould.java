@@ -11,6 +11,7 @@ import com.bordify.repositories.BoardRepository;
 import com.bordify.services.BoardService;
 import com.bordify.shared.infrastucture.controlles.UnitTestBaseClass;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,14 +35,20 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @InjectMocks
     private BoardService boardService;
 
+    User user;
+    Board board;
+
+    @BeforeEach
+    public void setup(){
+        this.user = UserFactory.getRandomUser();
+        this.board = BoardFactory.getRandomBoard(this.user);
+    }
+
     @DisplayName("should create a board")
     @Test
     public void shouldCreateABoard(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         when(repositoryMock.save(board)).thenReturn(board);
-
 
         boardService.createBoard(board);
 
@@ -52,10 +59,7 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldDeleteABoard(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         when(repositoryMock.save(board)).thenReturn(board);
-
 
         boardService.createBoard(board);
 
@@ -80,8 +84,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldUpdateNameOfBouard(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
         Board boardToUpdate = Board.builder()
@@ -110,8 +112,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     public void shouldntUpdateAnNotexistedBouard(){
 
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
         Board boardToUpdate = Board.builder()
@@ -135,8 +135,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldntUpdateWithAVoidName(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
         board.setName(" ");
@@ -172,9 +170,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldntUpdateWithANullName(){
 
-
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
         board.setName(null);
@@ -196,8 +191,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldCreateBoardIfNameIsNotVoidOrNull(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         board.setName("");
 
         Assertions.assertThrows(InvalidBoardNameException.class, ()->{
@@ -232,9 +225,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldBeOwnerOfBoard(){
 
-
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
         UUID userId = user.getId();
 
@@ -252,8 +242,6 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldThrowAnExceptionWhenIsNotOwnerOfBoard(){
 
-        User user = UserFactory.getRandomUser();
-        Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
         UUID userIdNotRelated = UUID.randomUUID();
 

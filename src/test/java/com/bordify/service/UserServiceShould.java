@@ -1,20 +1,26 @@
 package com.bordify.service;
 
 import com.bordify.controllers.auth.AuthJwtResponse;
+import com.bordify.exceptions.DuplicateEmailException;
+import com.bordify.exceptions.DuplicateUserNamelException;
 import com.bordify.exceptions.UserNotFoundException;
 import com.bordify.models.User;
-import com.bordify.persistence.models.UserModelTestService;
+import com.bordify.persistence.models.UserFactory;
 import com.bordify.repositories.UserRepository;
 import com.bordify.services.JwtService;
 import com.bordify.services.UserService;
 import com.bordify.shared.infrastucture.controlles.UnitTestBaseClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static com.bordify.shared.domain.FactoryValues.generateRandomAlphanumeric;
+import static com.bordify.shared.domain.FactoryValues.generateRandomEmail;
+import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -36,12 +42,13 @@ public class UserServiceShould extends UnitTestBaseClass {
         Mockito.reset(userRepositoryMock, jwtServiceMock);
     }
 
+    @DisplayName("shoud find a user by username")
     @Test
     public void shouldFindUserByUsername() {
         // Given
-        String userName = "XXXX";
-        User userTest = UserModelTestService.createValidUser();
-        userTest.setUsername(userName);
+        User userTest = UserFactory.getRandomUser();
+        String userName = userTest.getUsername();
+
 
         // When
         when(userRepositoryMock.findByUsername(userName)).thenReturn(userTest);
@@ -53,6 +60,7 @@ public class UserServiceShould extends UnitTestBaseClass {
         assertEquals(userTest.getId(), user.getId());
     }
 
+    @DisplayName("shoud throw an exeption when an user not found by username")
     @Test
     public void shouldThrowUserNotFoundExceptionWhenUserNotFound() {
         // Given
@@ -66,9 +74,10 @@ public class UserServiceShould extends UnitTestBaseClass {
 
     }
 
+    @DisplayName("should create an User")
     @Test
     public void shouldCreateUser() {
-        User userTest = UserModelTestService.createValidUser();
+        User userTest = UserFactory.getRandomUser();
 
         when(userRepositoryMock.save(userTest)).thenReturn(userTest);
 
@@ -93,7 +102,40 @@ public class UserServiceShould extends UnitTestBaseClass {
         Assertions.assertNotNull(response.getToken());
 //        Assertions.assertNotNull(response.getRefreshToken());
 
+    }
 
+    @DisplayName("shoud throw an exeption when we try create an user with existed email")
+    @Test
+    public void shouldThrowExceptionWhenCreateAnUserWithExistedEmail() {
+
+        // Given
+        User userTest = UserFactory.getRandomUser();
+        String email = userTest.getEmail();
+
+        String userName = generateRandomAlphanumeric(generateRandomValue(5,20));
+        when(userRepositoryMock.existsByEmail(email)).thenReturn(true);
+
+        // When/Then
+        DuplicateEmailException exception = assertThrows(DuplicateEmailException.class, () -> {
+            userService.createUser(userTest);
+        });
+
+    }
+
+    @DisplayName("shoud throw an exeption when we try create an user with existed userName")
+    @Test
+    public void shouldThrowExceptionWhenCreateAnUserWithExistedUserName() {
+
+        // Given
+        User userTest = UserFactory.getRandomUser();
+        String userName = userTest.getUsername();
+
+        when(userRepositoryMock.existsByUsername(userName)).thenReturn(true);
+
+        // When/Then
+        DuplicateUserNamelException exception = assertThrows(DuplicateUserNamelException.class, () -> {
+            userService.createUser(userTest);
+        });
 
     }
 

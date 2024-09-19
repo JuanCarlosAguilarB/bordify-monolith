@@ -88,7 +88,7 @@ public class JwtService {
 
             LocalDate now = LocalDate.now();
 
-            return !decodedJWT.getExpiresAt().before(java.sql.Date.valueOf(now)) ||
+            return !decodedJWT.getExpiresAt().before(java.sql.Date.valueOf(now)) &&
                     decodedJWT.getSubject().equals(userDetails.getUsername());
 
         } catch (JWTDecodeException exception) {

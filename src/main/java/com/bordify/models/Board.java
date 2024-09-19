@@ -35,7 +35,7 @@ public class Board {
      * Name of the board. It is a required field as denoted by @NonNull and cannot
      * be null as specified by @Column(nullable = false).
      */
-    @NonNull
+//    @NonNull
     @Column(nullable = false, unique = false)
     private String name;
 

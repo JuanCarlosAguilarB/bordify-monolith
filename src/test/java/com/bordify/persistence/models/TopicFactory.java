@@ -5,6 +5,8 @@ import com.bordify.models.Color;
 import com.bordify.models.Topic;
 import com.bordify.repositories.TopicRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.bordify.shared.domain.FactoryValues.generateRandomAlphanumeric;
@@ -26,6 +28,14 @@ public class TopicFactory {
                 .build();
 
         return topic;
+    }
+
+    public List<Topic> getRandomListOfTopics(int amountTopics, Color color, Board  board){
+        List<Topic> topics = new ArrayList<>();
+        for (int i=0; i<amountTopics; i++){
+            topics.add(getRandomTopic(color, board));
+        }
+        return topics;
     }
 
     public TopicFactory(TopicRepository topicRepository){

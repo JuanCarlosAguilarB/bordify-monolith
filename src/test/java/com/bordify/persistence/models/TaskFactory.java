@@ -2,6 +2,7 @@ package com.bordify.persistence.models;
 
 import com.bordify.models.Task;
 import com.bordify.models.Topic;
+import com.bordify.repositories.TaskRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 
 public class TaskFactory {
 
+    private TaskRepository taskRepository;
 
     public static Task getRandomTaks(Topic topic) {
 
@@ -51,5 +53,17 @@ public class TaskFactory {
         }
         return listTasks;
     }
+
+
+    public TaskFactory(TaskRepository taskRepository){
+        this.taskRepository=taskRepository;
+    }
+
+    public Task getRandomTaskPersisted(Topic topic) {
+        Task task = getRandomTaks(topic);
+        taskRepository.save(task);
+        return task;
+    }
+
 }
 

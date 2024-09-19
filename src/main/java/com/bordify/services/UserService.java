@@ -3,6 +3,7 @@ package com.bordify.services;
 import com.bordify.controllers.auth.AuthJwtResponse;
 //import com.bordify.events.CreateUserDomainEvent;
 import com.bordify.exceptions.DuplicateEmailException;
+import com.bordify.exceptions.DuplicateUserNamelException;
 import com.bordify.exceptions.UserNotFoundException;
 import com.bordify.models.User;
 import com.bordify.repositories.UserRepository;
@@ -39,7 +40,7 @@ public class UserService {
         } else if (userRepository.existsByEmail(user.getEmail())) {
             throw new DuplicateEmailException("The email " + user.getEmail() + " is already registered. Please use a different email.");
         } else if (userRepository.existsByUsername(user.getUsername())) {
-            throw new DuplicateEmailException("The username " + user.getUsername() + " is already registered. Please use a different username.");
+            throw new DuplicateUserNamelException("The username " + user.getUsername() + " is already registered. Please use a different username.");
         }
 
         userRepository.save(user);

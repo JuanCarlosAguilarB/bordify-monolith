@@ -100,6 +100,19 @@ public class GlobalExceptionHandler  {
     }
 
 
+    @ExceptionHandler(InvalidBoardNameException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiExceptionResponse  handleInvalidBoardNameException(InvalidBoardNameException ex) {
+        return new ApiExceptionResponse.ApiExceptionResponseBuilder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+    }
+
+
+
     /**
      * Handles UserNotFoundException.
      *

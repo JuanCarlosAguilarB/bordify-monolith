@@ -3,6 +3,7 @@ package com.bordify.services;
 
 import com.bordify.dtos.BoardListDTO;
 import com.bordify.exceptions.EntityNotFound;
+import com.bordify.exceptions.InvalidBoardNameException;
 import com.bordify.exceptions.ResourceNotCreatedException;
 import com.bordify.models.Board;
 import com.bordify.repositories.BoardRepository;
@@ -32,6 +33,7 @@ public class BoardService {
      * @throws ResourceNotCreatedException if the board cannot be created.
      */
     public void createBoard(Board board) {
+        ensureBoardNameIsValid(board.getName());
         try {
             boardRepository.save(board);
         } catch (Exception e) {
@@ -72,7 +74,7 @@ public class BoardService {
      */
     public Board update(Board board) {
         ensureBoardExist(board);
-
+        ensureBoardNameIsValid(board.getName());
         Board boardToUpdate = boardRepository.findById(board.getId()).get();
 
         UpdateFieldsOfClasses.updateFields(boardToUpdate, board);
@@ -95,6 +97,10 @@ public class BoardService {
         if (!boardRepository.existsById(board.getId())) {
             throw new EntityNotFound("Board not found");
         }
+    }
+
+    public void ensureBoardNameIsValid(String name) {
+        if(name == null || name.isBlank() || name.isEmpty()) throw new InvalidBoardNameException("Name of board should be valid, not void or blank");
     }
 
     /**

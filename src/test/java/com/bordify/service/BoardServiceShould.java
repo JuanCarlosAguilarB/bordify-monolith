@@ -132,4 +132,91 @@ public class BoardServiceShould extends UnitTestBaseClass {
 
     // Todo create test to verify that we cant create or update board with void name
 
+    @DisplayName("shouldn't update a board with void name")
+    @Test
+    public void shouldntUpdateWithAVoidName(){
+
+
+        User user = UserFactory.getRandomUser();
+        Board board = BoardFactory.getRandomBoard(user);
+        UUID boardId = board.getId();
+
+        Board boardToUpdate = Board.builder()
+                .id(board.getId())
+                .name(" ")
+                .userId(board.getUserId())
+                .build();
+
+        when(repositoryMock.existsById(boardId)).thenReturn(true);
+        when(repositoryMock.findById(boardId)).thenReturn(Optional.of(board));
+//        when(repositoryMock.save(boardToUpdate)).thenReturn(boardToUpdate);
+
+        Board boardUpdated = boardService.update(boardToUpdate);
+
+        Mockito.verify(repositoryMock,Mockito.times(1)).existsById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(1)).save(Mockito.any());
+
+        Assertions.assertEquals(boardToUpdate.getName(), boardUpdated.getName());
+        Assertions.assertEquals(boardToUpdate.getId(), boardUpdated.getId());
+    }
+
+    @DisplayName("shouldn't update a board with null name")
+    @Test
+    public void shouldntUpdateWithANullName(){
+
+
+        User user = UserFactory.getRandomUser();
+        Board board = BoardFactory.getRandomBoard(user);
+        UUID boardId = board.getId();
+
+        Board boardToUpdate = Board.builder()
+                .id(board.getId())
+                .name(null)
+                .userId(board.getUserId())
+                .build();
+
+        when(repositoryMock.existsById(boardId)).thenReturn(true);
+        when(repositoryMock.findById(boardId)).thenReturn(Optional.of(board));
+//        when(repositoryMock.save(boardToUpdate)).thenReturn(boardToUpdate);
+
+        Board boardUpdated = boardService.update(boardToUpdate);
+
+        Mockito.verify(repositoryMock,Mockito.times(1)).existsById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(1)).save(Mockito.any());
+
+        Assertions.assertEquals(boardToUpdate.getName(), boardUpdated.getName());
+        Assertions.assertEquals(boardToUpdate.getId(), boardUpdated.getId());
+    }
+
+    @DisplayName("should create a board non null or void name")
+    @Test
+    public void shouldCreateBoardIfNameIsNotVoidOrNull(){
+
+        User user = UserFactory.getRandomUser();
+        Board board = BoardFactory.getRandomBoard(user);
+        board.setName("");
+        when(repositoryMock.save(board)).thenReturn(board);
+
+        boardService.createBoard(board);
+
+        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+
+        board.setName(" ");
+        when(repositoryMock.save(board)).thenReturn(board);
+
+        boardService.createBoard(board);
+
+        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+
+        board.setName(null);
+        when(repositoryMock.save(board)).thenReturn(board);
+
+        boardService.createBoard(board);
+
+        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+    }
+
+
 }

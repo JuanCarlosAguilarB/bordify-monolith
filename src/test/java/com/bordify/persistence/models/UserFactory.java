@@ -1,6 +1,5 @@
 package com.bordify.persistence.models;
 
-import com.bordify.models.Board;
 import com.bordify.models.User;
 import com.bordify.repositories.UserRepository;
 

@@ -6,7 +6,6 @@ import com.bordify.controllers.auth.ResponseDTO;
 import com.bordify.models.User;
 import com.bordify.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestMethodOrder;

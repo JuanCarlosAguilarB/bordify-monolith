@@ -32,4 +32,6 @@ public interface TaskItemRepository extends JpaRepository<TaskItem, UUID> {
      * @param taskId The ID of the task.
      */
     public void deleteAllByTaskId(UUID taskId);
+
+    public boolean existsById(UUID id);
 }

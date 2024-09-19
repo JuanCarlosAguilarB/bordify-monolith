@@ -3,8 +3,7 @@ package com.bordify.persistence;
 import com.bordify.models.User;
 import com.bordify.persistence.models.UserFactory;
 import com.bordify.repositories.UserRepository;
-import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
-import jakarta.transaction.Transactional;
+import com.bordify.shared.infrastucture.controlles.IntegrationSqlDbTestBaseClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
-public class UserRepositoryShould extends IntegrationTestBaseClass
+
+public class UserRepositoryShould extends IntegrationSqlDbTestBaseClass
 {
 
     @Autowired

@@ -5,8 +5,7 @@ import com.bordify.dtos.TaskListDTO;
 import com.bordify.models.*;
 import com.bordify.persistence.models.*;
 import com.bordify.repositories.*;
-import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
-import jakarta.transaction.Transactional;
+import com.bordify.shared.infrastucture.controlles.IntegrationSqlDbTestBaseClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,8 @@ import java.util.Optional;
 
 import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 
-@Transactional
-public class TaskRepositoryShould  extends IntegrationTestBaseClass {
+
+public class TaskRepositoryShould  extends IntegrationSqlDbTestBaseClass {
 
 
     private TopicFactory topicFactory;

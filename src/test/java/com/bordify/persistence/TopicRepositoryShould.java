@@ -10,8 +10,7 @@ import com.bordify.persistence.models.ColorFactory;
 import com.bordify.persistence.models.TopicFactory;
 import com.bordify.persistence.models.UserFactory;
 import com.bordify.repositories.*;
-import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
-import jakarta.transaction.Transactional;
+import com.bordify.shared.infrastucture.controlles.IntegrationSqlDbTestBaseClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +24,7 @@ import java.util.UUID;
 
 import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 
-@Transactional
-public class TopicRepositoryShould extends IntegrationTestBaseClass {
+public class TopicRepositoryShould extends IntegrationSqlDbTestBaseClass {
 
     private TopicRepository topicRepository;
     private TopicFactory topicFactory;

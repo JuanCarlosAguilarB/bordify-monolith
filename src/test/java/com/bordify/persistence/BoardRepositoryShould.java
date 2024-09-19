@@ -8,8 +8,7 @@ import com.bordify.persistence.models.BoardFactory;
 import com.bordify.persistence.models.UserFactory;
 import com.bordify.repositories.BoardRepository;
 import com.bordify.repositories.UserRepository;
-import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
-import jakarta.transaction.Transactional;
+import com.bordify.shared.infrastucture.controlles.IntegrationSqlDbTestBaseClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +23,8 @@ import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
-public class BoardRepositoryShould extends IntegrationTestBaseClass {
+
+public class BoardRepositoryShould extends IntegrationSqlDbTestBaseClass {
 
     private BoardRepository boardRepository;
     private UserFactory userFactory;

@@ -3,8 +3,7 @@ package com.bordify.persistence;
 import com.bordify.models.*;
 import com.bordify.persistence.models.*;
 import com.bordify.repositories.*;
-import com.bordify.shared.infrastucture.controlles.IntegrationTestBaseClass;
-import jakarta.transaction.Transactional;
+import com.bordify.shared.infrastucture.controlles.IntegrationSqlDbTestBaseClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +16,7 @@ import java.util.UUID;
 
 import static com.bordify.utils.GeneratorValuesRandom.generateRandomValue;
 
-@Transactional
-public class TaskItemRepositoryShould extends IntegrationTestBaseClass {
+public class TaskItemRepositoryShould extends IntegrationSqlDbTestBaseClass {
 
 
     private TopicFactory topicFactory;

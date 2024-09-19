@@ -2,6 +2,7 @@ package com.bordify.service;
 
 import com.bordify.dtos.BoardListDTO;
 import com.bordify.exceptions.EntityNotFound;
+import com.bordify.exceptions.InvalidBoardNameException;
 import com.bordify.models.Board;
 import com.bordify.models.User;
 import com.bordify.persistence.models.BoardFactory;
@@ -18,8 +19,6 @@ import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -136,29 +135,37 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldntUpdateWithAVoidName(){
 
-
         User user = UserFactory.getRandomUser();
         Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
-        Board boardToUpdate = Board.builder()
-                .id(board.getId())
-                .name(" ")
-                .userId(board.getUserId())
-                .build();
+        board.setName(" ");
 
         when(repositoryMock.existsById(boardId)).thenReturn(true);
-        when(repositoryMock.findById(boardId)).thenReturn(Optional.of(board));
-//        when(repositoryMock.save(boardToUpdate)).thenReturn(boardToUpdate);
 
-        Board boardUpdated = boardService.update(boardToUpdate);
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.update(board);
+        });
+
 
         Mockito.verify(repositoryMock,Mockito.times(1)).existsById(boardId);
-        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
-        Mockito.verify(repositoryMock,Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(repositoryMock,Mockito.times(0)).findById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(0)).save(Mockito.any());
 
-        Assertions.assertEquals(boardToUpdate.getName(), boardUpdated.getName());
-        Assertions.assertEquals(boardToUpdate.getId(), boardUpdated.getId());
+        Mockito.reset(repositoryMock);
+        board.setName("");
+
+        when(repositoryMock.existsById(boardId)).thenReturn(true);
+
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.update(board);
+        });
+
+
+        Mockito.verify(repositoryMock,Mockito.times(1)).existsById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(0)).findById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(0)).save(Mockito.any());
+
     }
 
     @DisplayName("shouldn't update a board with null name")
@@ -170,24 +177,19 @@ public class BoardServiceShould extends UnitTestBaseClass {
         Board board = BoardFactory.getRandomBoard(user);
         UUID boardId = board.getId();
 
-        Board boardToUpdate = Board.builder()
-                .id(board.getId())
-                .name(null)
-                .userId(board.getUserId())
-                .build();
+        board.setName(null);
 
         when(repositoryMock.existsById(boardId)).thenReturn(true);
-        when(repositoryMock.findById(boardId)).thenReturn(Optional.of(board));
-//        when(repositoryMock.save(boardToUpdate)).thenReturn(boardToUpdate);
 
-        Board boardUpdated = boardService.update(boardToUpdate);
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.update(board);
+        });
+
 
         Mockito.verify(repositoryMock,Mockito.times(1)).existsById(boardId);
-        Mockito.verify(repositoryMock,Mockito.times(1)).findById(boardId);
-        Mockito.verify(repositoryMock,Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(repositoryMock,Mockito.times(0)).findById(boardId);
+        Mockito.verify(repositoryMock,Mockito.times(0)).save(Mockito.any());
 
-        Assertions.assertEquals(boardToUpdate.getName(), boardUpdated.getName());
-        Assertions.assertEquals(boardToUpdate.getId(), boardUpdated.getId());
     }
 
     @DisplayName("should create a board non null or void name")
@@ -197,25 +199,32 @@ public class BoardServiceShould extends UnitTestBaseClass {
         User user = UserFactory.getRandomUser();
         Board board = BoardFactory.getRandomBoard(user);
         board.setName("");
-        when(repositoryMock.save(board)).thenReturn(board);
 
-        boardService.createBoard(board);
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.createBoard(board);
+        });
+//
+        Mockito.verify(repositoryMock, Mockito.times(0)).save(board);
 
-        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+        Mockito.reset(repositoryMock);
 
         board.setName(" ");
-        when(repositoryMock.save(board)).thenReturn(board);
 
-        boardService.createBoard(board);
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.createBoard(board);
+        });
 
-        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+        Mockito.verify(repositoryMock, Mockito.times(0)).save(board);
+
+        Mockito.reset(repositoryMock);
 
         board.setName(null);
-        when(repositoryMock.save(board)).thenReturn(board);
 
-        boardService.createBoard(board);
+        Assertions.assertThrows(InvalidBoardNameException.class, ()->{
+            boardService.createBoard(board);
+        });
 
-        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+        Mockito.verify(repositoryMock, Mockito.times(0)).save(board);
     }
 
 

@@ -93,13 +93,13 @@ public class BoardService {
      * @param board The board to check existence for.
      * @throws EntityNotFound if the board does not exist.
      */
-    public void ensureBoardExist(Board board) {
+    private void ensureBoardExist(Board board) {
         if (!boardRepository.existsById(board.getId())) {
             throw new EntityNotFound("Board not found");
         }
     }
 
-    public void ensureBoardNameIsValid(String name) {
+    private void ensureBoardNameIsValid(String name) {
         if(name == null || name.isBlank() || name.isEmpty()) throw new InvalidBoardNameException("Name of board should be valid, not void or blank");
     }
 
@@ -111,6 +111,9 @@ public class BoardService {
      * @return True if the user is the owner of the board, false otherwise.
      * @throws EntityNotFound if the board with the specified ID does not exist.
      */
+
+    // Todo: fix that, this validation should be in services not in infractruture (controllers).
+    // Another anotation, this method would be void, if not, return false when condition was false, not an exception
     public Boolean isUserOwnerOfBoard(UUID boardId, UUID userId) {
         Optional<Board> board = Optional.ofNullable(boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFound("Board not found")));

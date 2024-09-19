@@ -63,6 +63,25 @@ public class GlobalExceptionHandler  {
                 .build();
     }
 
+
+
+    /**
+     * Handles DuplicateEmailException.
+     *
+     * @param ex The DuplicateEmailException object.
+     * @return ApiExceptionResponse containing details of the exception.
+     */
+    @ExceptionHandler(DuplicateUserNamelException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ApiExceptionResponse handleDuplicateUsernameExistException(DuplicateUserNamelException ex) {
+        return new ApiExceptionResponse.ApiExceptionResponseBuilder()
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .build();
+    }
+
     /**
      * Handles InvalidRequestArgumentException.
      *

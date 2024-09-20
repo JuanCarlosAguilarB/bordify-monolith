@@ -61,7 +61,7 @@ public class TaskItemService {
      * @param taskItem The task item to check existence for.
      * @throws EntityNotFound if the task item does not exist.
      */
-    public void ensureTaskItemExist(TaskItem taskItem) {
+    private void ensureTaskItemExist(TaskItem taskItem) {
         if (!taskItemRepository.existsById(taskItem.getId())) {
             throw new EntityNotFound("TaskItem not found");
         }

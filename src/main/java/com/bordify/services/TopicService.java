@@ -57,7 +57,7 @@ public class TopicService {
      *
      * @param topic The topic to check.
      */
-    public void ensureTopicExist(Topic topic) {
+    private void ensureTopicExist(Topic topic) {
         if (!topicRepository.existsById(topic.getId())) {
             throw new EntityNotFound("Topic not found");
         }

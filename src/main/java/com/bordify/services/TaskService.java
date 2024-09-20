@@ -71,26 +71,26 @@ public class TaskService {
         return taskPaginated;
     }
 
-    /**
-     * Retrieves all tasks in a paginated format.
-     *
-     * @param pageable The pagination information.
-     * @return A page of {@link Task} entities.
-     */
-    public Page<Task> listTasks(Pageable pageable) {
-        return taskRepository.findAll(pageable);
-    }
+//    /**
+//     * Retrieves all tasks in a paginated format.
+//     *
+//     * @param pageable The pagination information.
+//     * @return A page of {@link Task} entities.
+//     */
+//    public Page<Task> listTasks(Pageable pageable) {
+//        return taskRepository.findAll(pageable);
+//    }
 
-    /**
-     * Retrieves all tasks as a list, respecting pagination but not returning it as a page structure.
-     * Useful when pagination information is needed but not the paginated response structure.
-     *
-     * @param pageable The pagination information.
-     * @return A list of {@link Task} entities.
-     */
-    public List<Task> listTasksSliced(Pageable pageable) {
-        return (List<Task>) taskRepository.findAll(pageable);
-    }
+//    /**
+//     * Retrieves all tasks as a list, respecting pagination but not returning it as a page structure.
+//     * Useful when pagination information is needed but not the paginated response structure.
+//     *
+//     * @param pageable The pagination information.
+//     * @return A list of {@link Task} entities.
+//     */
+//    public List<Task> listTasksSliced(Pageable pageable) {
+//        return (List<Task>) taskRepository.findAll(pageable);
+//    }
 
     /**
      * Retrieves a task with its associated task items.
@@ -122,7 +122,7 @@ public class TaskService {
      * @param id The id of the task to check.
      * @throws EntityNotFound If the task does not exist.
      */
-    public void ensureTaskExists(UUID id) {
+    private void ensureTaskExists(UUID id) {
         if (!taskRepository.existsById(id)) {
             throw new EntityNotFound("Task not found");
         }

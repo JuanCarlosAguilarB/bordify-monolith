@@ -59,12 +59,14 @@ public class BoardServiceShould extends UnitTestBaseClass {
     @Test
     public void shouldDeleteABoard(){
 
-        when(repositoryMock.save(board)).thenReturn(board);
+        UUID boardId = board.getId();
+        when(repositoryMock.existsById(boardId)).thenReturn(true);
 
-        boardService.createBoard(board);
+        boardService.deleteBoard(boardId);
 
-        Mockito.verify(repositoryMock, Mockito.times(1)).save(board);
+        Mockito.verify(repositoryMock, Mockito.times(1)).deleteById(boardId);
     }
+
 
     @DisplayName("shoud find a list of boards")
     @Test

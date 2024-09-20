@@ -96,17 +96,17 @@ public class TaskController {
     }
 
 
-    /**
-     * Retrieves a paginated list of tasks.
-     *
-     * @param pageable Pagination information for the list.
-     * @return ResponseEntity containing the paginated list of tasks.
-     */
-    @GetMapping("/task/")
-    public ResponseEntity<?> getTask(Pageable pageable) {
-
-        return ResponseEntity.ok(taskServices.listTasks(pageable));
-    }
+//    /**
+//     * Retrieves a paginated list of tasks.
+//     *
+//     * @param pageable Pagination information for the list.
+//     * @return ResponseEntity containing the paginated list of tasks.
+//     */
+//    @GetMapping("/task/")
+//    public ResponseEntity<?> getTask(Pageable pageable) {
+//
+//        return ResponseEntity.ok(taskServices.listTasks(pageable));
+//    }
 
     /**
      * Retrieves a task by its id.

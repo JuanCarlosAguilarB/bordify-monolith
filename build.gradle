@@ -62,7 +62,7 @@ test {
 	}
 
 	// parrallel test execution
-	maxParallelForks = Runtime.runtime.availableProcessors()
+//	maxParallelForks = Runtime.runtime.availableProcessors()
 
 }
 
@@ -70,7 +70,7 @@ task integrationTest(type: Test) {
 	useJUnitPlatform {
 		includeTags 'integration'
 	}
-	maxParallelForks = Runtime.runtime.availableProcessors()
+//	maxParallelForks = Runtime.runtime.availableProcessors()
 }
 
 jacoco {

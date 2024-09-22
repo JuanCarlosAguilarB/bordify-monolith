@@ -168,7 +168,7 @@ public class TaskService {
             taskItemRepository.save(taskItem);
         }
 
-        taskItemRepository.deleteAllByIdNotIn(taskItemsIds);
+        taskItemRepository.deleteAllByIdNotInAndTaskId(taskItemsIds, task.getId());
         taskRepository.save(task);
 
         return task;

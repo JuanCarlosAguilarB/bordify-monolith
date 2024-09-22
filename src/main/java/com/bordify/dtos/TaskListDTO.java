@@ -1,8 +1,10 @@
 package com.bordify.dtos;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import com.bordify.models.TaskItem;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +13,9 @@ import java.util.UUID;
  * Represents a data transfer object (DTO) for displaying a list of tasks with their associated task items.
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskListDTO {
 
     /**

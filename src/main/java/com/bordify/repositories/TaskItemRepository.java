@@ -24,7 +24,8 @@ public interface TaskItemRepository extends JpaRepository<TaskItem, UUID> {
      *
      * @param ids The list of IDs to keep.
      */
-    public void deleteAllByIdNotIn(List<UUID> ids);
+//    public void deleteAllByIdNotIn(List<UUID> ids);
+    public void deleteAllByIdNotInAndTaskId(List<UUID> ids, UUID taskId);
 
     /**
      * Deletes all task items by task ID.

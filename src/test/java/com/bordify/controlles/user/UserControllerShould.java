@@ -94,7 +94,7 @@ public class UserControllerShould extends IntegrationControllersTestBaseClass {
 
 
         int isConflictStatus = 409 ;
-        MvcResult result = assertRequest(HttpMethod.POST, urlCreationUser, isConflictStatus,false)
+        MvcResult result = assertRequestWithBody(HttpMethod.POST, urlCreationUser,requestUserBody, isConflictStatus,false)
                 .andReturn();
 
         // verify that only find one user.

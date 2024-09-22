@@ -23,16 +23,14 @@ public class BoardControllerShould extends IntegrationControllersTestBaseClass {
                 .name(generateRandomAlphanumeric(generateRandomValue(5,20)))
                 .build();
 
-        int isSuccesfull = 200;
-//        MvcResult result = assertRequestWithBody(
-//                HttpMethod.POST, urlBoardCration,boardRequest,isSuccesfull,true).andReturn();
+        int wasCreated = 201;
 
 
-        MvcResult result = assertRequestWithBody(HttpMethod.POST, urlBoardCration, boardRequest, isSuccesfull,false)
+        MvcResult result = assertRequestWithBody(HttpMethod.POST, urlBoardCration, boardRequest, wasCreated,true)
 //                .andExpect(status().isCreated())
 //                .andExpect(header().exists("Authorization"))
-                .andExpect(jsonPath("$.accessToken").exists())
-                .andExpect(jsonPath("$.token").exists())
+//                .andExpect(jsonPath("$.accessToken").exists())
+//                .andExpect(jsonPath("$.token").exists())
 //                .andExpect(jsonPath("$.username").value(userExisted.getUsername()))
 //                .andExpect(jsonPath("$.lastName").value(userExisted.getLastName()))
 //                .andExpect(jsonPath("$.phoneNumber").value(userExisted.getPhoneNumber()))

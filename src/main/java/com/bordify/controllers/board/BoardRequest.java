@@ -1,10 +1,11 @@
 package com.bordify.controllers.board;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardRequest {
     private String name;
 }

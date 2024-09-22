@@ -135,7 +135,7 @@ public class TaskItemRepositoryShould extends IntegrationSqlDbTestBaseClass {
     public void shouldDeleteTaskItemsThanNotFoundInAListOfIds(){
 
         int elementsToCreate = generateRandomValue(3, 15);
-        int elementsToPreserved = generateRandomValue(2, 14);
+        int elementsToPreserved = generateRandomValue(2, elementsToCreate);
 
         List<TaskItem> taskItemList = TaskItemFactory.getRandomListOfTaskItem(elementsToCreate, taskTest);
         taskItemRepository.saveAllAndFlush(taskItemList);
@@ -148,7 +148,7 @@ public class TaskItemRepositoryShould extends IntegrationSqlDbTestBaseClass {
             idsToPreserved.add(taskItemList.get(i).getId());
         }
 
-        taskItemRepository.deleteAllByIdNotIn(idsToPreserved);
+        taskItemRepository.deleteAllByIdNotInAndTaskId(idsToPreserved, taskTest.getId());
         taskItemRepository.flush();
 
         for ( int i=0; i<elementsToPreserved;i++){
@@ -179,12 +179,15 @@ public class TaskItemRepositoryShould extends IntegrationSqlDbTestBaseClass {
         // that it not found in [uuid] but has same taskId, so that's mean, delete taskItems relates with task
 
         List<UUID> idsToPreserved= new ArrayList<>();
+
+
         for ( int i=0; i<elementsToPreserved;i++){
             idsToPreserved.add(taskItemList.get(i).getId());
         }
 
 
-        taskItemRepository.deleteAllByIdNotIn(idsToPreserved);
+
+        taskItemRepository.deleteAllByIdNotInAndTaskId(idsToPreserved, taskTest.getId());
         taskItemRepository.flush();
 
         for ( int i=0; i<elementsToPreserved;i++){
@@ -192,14 +195,18 @@ public class TaskItemRepositoryShould extends IntegrationSqlDbTestBaseClass {
                     taskItemRepository.existsById(idsToPreserved.get(i))
             );
         }
+
+        System.out.println("ids to preserved");
+        System.out.println(idsToPreserved);
+        System.out.println(" task item list no related");
         System.out.println(taskItemListNoRelated);
+
         // Must exist another TaskItems
         for ( int i=0; i<elementsToCreate;i++){
             System.out.println(i);
             System.out.println(taskItemListNoRelated.get(0).getId());
             Assertions.assertTrue(
                     taskItemRepository.existsById(
-
                             taskItemListNoRelated.get(0).getId()
                     )
             );

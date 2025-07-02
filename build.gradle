@@ -23,6 +23,12 @@ repositories {
 	mavenCentral()
 }
 
+dependencyManagement {
+	imports {
+		mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.6.0")
+	}
+}
+
 dependencies {
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -49,6 +55,32 @@ dependencies {
 	testImplementation 'org.mockito:mockito-core:5.12.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator:3.3.3'
+
+	// opentelemetry
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+	implementation 'io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter'
+	implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.9.0"))
+
+//	// opentelemetry exporters
+//	implementation 'io.opentelemetry:opentelemetry-exporter-prometheus'
+//	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+//	implementation 'io.opentelemetry:opentelemetry-exporter-otlp-common'
+//	implementation 'io.opentelemetry:opentelemetry-exporter-otlp-trace'
+//
+//	// opentelemetry sdk
+//	implementation 'io.opentelemetry:opentelemetry-sdk'
+
+	// OpenTelemetry API
+	implementation 'io.opentelemetry:opentelemetry-api:1.19.0'
+
+	// OpenTelemetry SDK
+	implementation 'io.opentelemetry:opentelemetry-sdk:1.19.0'
+
+	// OpenTelemetry Exporter para Prometheus
+//	implementation 'io.opentelemetry:opentelemetry-exporter-prometheus:1.19.0'
+
+
 
 }
 
